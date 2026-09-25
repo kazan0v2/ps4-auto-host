@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 20260925-kazanova-logo
+# KAZANOVA CACHE v20260925-2
 
 index.html #ded13950489784c417faf775a3a567185952530d81a6701bb3c7f7069bce6746
 jb.html #a0ceb8eedd4eccf8782edbaf81a9194706d6832f5d0da91ab91bd4c952e4451c
@@ -24,4 +24,4 @@ NETWORK:
 FALLBACK:
 index.html #ded13950489784c417faf775a3a567185952530d81a6701bb3c7f7069bce6746
 jb.html #a0ceb8eedd4eccf8782edbaf81a9194706d6832f5d0da91ab91bd4c952e4451c
-kazanova-bg.png
+kazanova-bg.jpg
