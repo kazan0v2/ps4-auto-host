@@ -1,7 +1,8 @@
 CACHE MANIFEST 
+# KAZANOVA CACHE v20260925-2
 
 CACHE:
-kazanova-bg.png
+kazanova-bg.jpg
 kazanova-logo.png 
 ../img.jpg
 ../style.css
@@ -32,3 +33,4 @@ index.html
 
 NETWORK: 
 * 
+kazanova-logo.png

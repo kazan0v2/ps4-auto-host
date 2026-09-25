@@ -92,8 +92,8 @@ a {
 }
 
 /* KAZANOVA 3D UI overrides */
-html,body{min-height:100%;margin:0;padding:0;background:#05090e url('kazanova-bg.png') center center/cover no-repeat fixed;color:#f7f2ea;font-family:Arial,"Segoe UI",sans-serif;text-align:center;perspective:1100px;-webkit-perspective:1100px;}
+html,body{min-height:100%;margin:0;padding:0;background:#05090e url('kazanova-bg.jpg') center center/cover no-repeat fixed;color:#f7f2ea;font-family:Arial,"Segoe UI",sans-serif;text-align:center;-webkit-}
 body{position:relative;overflow-x:hidden;}
-.btn{background:linear-gradient(180deg,#efa45f 0%,#c66c31 16%,#9a451f 63%,#6c2a0f 100%);border:1px solid #ffd09e;border-bottom:5px solid #4e1c08;border-radius:13px;color:#fff8f0;box-shadow:0 12px 0 rgba(45,14,3,.80),0 18px 30px rgba(0,0,0,.55),inset 0 2px 1px rgba(255,255,255,.42),inset 0 -8px 14px rgba(67,18,3,.36);font-weight:900;text-shadow:0 2px 2px rgba(0,0,0,.78);transform:perspective(650px) rotateX(-4deg) translateZ(10px);-webkit-transform:perspective(650px) rotateX(-4deg) translateZ(10px);}
-.btn:hover,.btn:focus{background:linear-gradient(180deg,#ffc17f,#dc7d3d 20%,#aa4d23 68%,#753016);box-shadow:0 9px 0 rgba(45,14,3,.82),0 15px 27px rgba(0,0,0,.52),inset 0 2px 1px rgba(255,255,255,.48),0 0 25px rgba(238,153,78,.42);transform:perspective(650px) rotateX(-2deg) translateY(3px) translateZ(13px);-webkit-transform:perspective(650px) rotateX(-2deg) translateY(3px) translateZ(13px);outline:none;}
+.btn{background:linear-gradient(180deg,#efa45f 0%,#c66c31 16%,#9a451f 63%,#6c2a0f 100%);border:1px solid #ffd09e;border-bottom:5px solid #4e1c08;border-radius:13px;color:#fff8f0;box-shadow:0 12px 0 rgba(45,14,3,.80),0 18px 30px rgba(0,0,0,.55),inset 0 2px 1px rgba(255,255,255,.42),inset 0 -8px 14px rgba(67,18,3,.36);font-weight:900;text-shadow:0 2px 2px rgba(0,0,0,.78);-webkit-}
+.btn:hover,.btn:focus{background:linear-gradient(180deg,#ffc17f,#dc7d3d 20%,#aa4d23 68%,#753016);box-shadow:0 9px 0 rgba(45,14,3,.82),0 15px 27px rgba(0,0,0,.52),inset 0 2px 1px rgba(255,255,255,.48),0 0 25px rgba(238,153,78,.42);-webkit-outline:none;}
 h1{color:#fff5eb;text-shadow:0 3px 0 rgba(70,29,10,.95),0 7px 16px rgba(0,0,0,.88),0 0 14px rgba(232,144,72,.20);}
