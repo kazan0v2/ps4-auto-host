@@ -5109,9 +5109,9 @@ async function doJBwithPSFreeLapseExploit() {
     window.log("Running DEMO application...\n");
     window.log("Detected FW: PS4 v9.00\n");
     window.log("Starting PSFree Exploit...");
-    window.log("PSFree STAGE 1/3: UAF SSV");
-    window.log("PSFree STAGE 2/3: Get String Relative Read Primitive");
-    window.log("PSFree STAGE 3/3: Achieve Arbitrary Read/Write Primitive");
+    window.log("KAZANOVA STAGE 1/3: UAF SSV");
+    window.log("KAZANOVA STAGE 2/3: Get String Relative Read Primitive");
+    window.log("KAZANOVA STAGE 3/3: Achieve Arbitrary Read/Write Primitive");
     window.log("Achieved Arbitrary R/W\n");
     window.log("Starting Lapse Kernel Exploit...");
     window.log('Lapse Setup');
@@ -5134,18 +5134,18 @@ async function doJBwithPSFreeLapseExploit() {
   }
   window.log("Starting PSFree Exploit...");
   try {
-    window.log("PSFree STAGE 1/3: UAF SSV");
+    window.log("KAZANOVA STAGE 1/3: UAF SSV");
     await sleep(50); // Wait 50ms
     const [fsets, indices] = prepare_uaf();
     const [view, [view2, pop]] = await uaf_ssv(fsets, indices[1], indices[0]);
-    window.log("PSFree STAGE 2/3: Get String Relative Read Primitive");
+    window.log("KAZANOVA STAGE 2/3: Get String Relative Read Primitive");
     await sleep(50); // Wait 50ms
     const rdr = await make_rdr(view);
     for (const fset of fsets) {
       fset.rows = '';
       fset.cols = '';
     }
-    window.log("PSFree STAGE 3/3: Achieve Arbitrary Read/Write Primitive");
+    window.log("KAZANOVA STAGE 3/3: Achieve Arbitrary Read/Write Primitive");
     await sleep(50); // Wait 50ms
     await make_arw(rdr, view2, pop);
     window.log("Achieved Arbitrary R/W\n");
