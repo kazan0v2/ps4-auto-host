@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html manifest="css.manifest">
+<head>
+<title>PS4 [5.05] 7.00 - 13.52 FW GoldHEN Host by KAZANOVA</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<script>
+history.replaceState(null,null,'index.html');var histlength=history.length;history.go(-histlength);
+function DLProgress(e){Percent=(Math.round(e.loaded / e.total * 100));window.msgs.innerHTML="Installing Offline Cache: " + Percent + "%";}
+function DisplayCacheProgress(){window.msgs.innerHTML="Cache Installed Successfully ✔";setTimeout(function(){window.msgs.innerHTML="Now Close And Re-Open Your Browser ...";},1500);}
+window.applicationCache.addEventListener("progress",DLProgress,false);
+window.applicationCache.oncached=function(e){DisplayCacheProgress();};
+window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};
+window.applicationCache.onerror=function(e){window.msgs.innerHTML="Error Installing Cache! - Clear and Re-Open Your Browser ...";};
+</script>
+<h1>PS4 [5.05] 7.00 - 13.52 FW GoldHEN Host by KAZANOVA</h1>
+<hr>
+<br>
+<h1 id=msgs style="font-size: 30px;margin-top: 77px;margin-bottom: 455px;">Starting Cache Installation...</h1>
+<h1 id="kzmsg" style="margin-top: 43px;"></h1>
+<script>(function(){var a=[75,65,90,65,78,79,86,65,32,8212,32,66,117,105,108,116,32,102,111,114,32,80,83,52,46,32,70,97,115,116,44,32,67,108,101,97,110,44,32,82,101,108,105,97,98,108,101,46],s="";for(var i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);document.getElementById("kzmsg").textContent=s;})();</script>
+</body>
+</html>
