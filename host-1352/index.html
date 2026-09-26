@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" manifest="cache.appcache">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAZANOVA PS4 HOST</title>
+<style>
+  html, body { margin:0; padding:0; background:#0b0d10; color:#c8ced8;
+               font:15px/1.45 "Segoe UI", system-ui, sans-serif; }
+  #wrap { padding:16px 18px; }
+  #state { font-size:22px; font-weight:700; margin:0 0 6px; }
+  #det { font-size:13px; color:#8b95a3; margin:0 0 4px; }
+  #det b { color:#c8ced8; font-weight:600; }
+  #cache { font-size:12px; color:#5c6672; margin:0 0 10px; min-height:14px; }
+  #cache.cacheok { color:#7fd0a0; }
+  .ok { color:#7fd0a0; } .bad { color:#d08a7f; } .warn { color:#d8c07f; }
+  #brand { text-align:center; padding:8px 10px; background:#0e1116;
+           border-bottom:1px solid #1e2732; }
+  #brand img { width:28px; height:28px; margin-right:8px; border-radius:50%;
+               vertical-align:middle; }
+  #brand b { font-size:15px; font-weight:700; letter-spacing:.14em;
+             color:#e6ebf2; vertical-align:middle; }
+</style>
+
+<style id="kazanova-premium-theme">
+html,body{min-height:100%;margin:0!important;padding:0!important;background:#070b10 url("kazanova-bg.jpg") center center/cover no-repeat!important;color:#f4eee7!important;font-family:Arial,"Segoe UI",sans-serif!important;}
+body{display:block!important;text-align:center!important;overflow-x:hidden!important;}
+.kz-brand{height:68px;box-sizing:border-box;display:flex!important;align-items:center;justify-content:center;padding:8px 14px;background:rgba(8,12,17,.94);border-bottom:1px solid #b8753f;}
+.kz-brand img{width:48px!important;height:48px!important;object-fit:cover!important;border-radius:50%!important;border:1px solid #c98a55!important;margin:0 12px 0 0!important;}
+.kz-brand .kz-title{font-size:21px;font-weight:bold;letter-spacing:.10em;color:#fff2e5;}
+.kz-brand .kz-sub{display:block;font-size:9px;letter-spacing:.16em;color:#d9a06d;margin-top:3px;font-weight:bold;}
+.kz-shell,#wrap{width:86%!important;max-width:820px!important;margin:7vh auto 0!important;padding:24px!important;box-sizing:border-box!important;background:rgba(5,9,13,.86)!important;border:1px solid #9f6538!important;border-radius:10px!important;}
+h1,h2,#state,#msgs{color:#fff1e2!important;text-shadow:none!important;}
+hr{height:1px;border:0!important;background:#9f6538!important;max-width:680px;}
+button,#jailbreakBtn,.pro-animated-btn,.btn{background:#a55325!important;color:#fff8f0!important;border:1px solid #d99a62!important;border-radius:8px!important;box-shadow:none!important;padding:12px 26px!important;font-weight:bold!important;cursor:pointer!important;text-shadow:none!important;animation:none!important;transition:none!important;}
+button:focus,#jailbreakBtn:focus,.pro-animated-btn:focus,.btn:focus{background:#bd6631!important;outline:1px solid #efbc8b!important;}
+button:disabled,#jailbreakBtn:disabled{opacity:.55!important;}
+#console,pre{width:86%!important;max-width:820px!important;margin:20px auto!important;box-sizing:border-box!important;background:rgba(3,7,10,.92)!important;border:1px solid #335567!important;border-radius:7px!important;color:#dff4ff!important;box-shadow:none!important;}
+#det,#cache{color:#d5dbe1!important;text-shadow:none!important;}
+#det b,.ok,.cacheok,.safe{color:#9ce2b7!important;text-shadow:none!important;}.bad,.danger{color:#ff9a8f!important}.warn{color:#f4cb83!important;}
+footer{color:#d4ae88!important;text-shadow:none!important;}a{color:#ffc17c!important;text-shadow:none!important;}
+#spin{box-shadow:none!important;}#msg{color:#fff4e8!important;text-shadow:none!important;font-weight:bold!important;}
+#msgs{display:inline-block;max-width:760px;padding:14px 22px!important;background:rgba(5,9,13,.86);border:1px solid #9f6538;border-radius:9px;box-shadow:none!important;}
+@media (max-width:760px){.kz-brand{height:62px}.kz-brand img{width:44px!important;height:44px!important}.kz-brand .kz-title{font-size:17px}.kz-brand .kz-sub{font-size:8px}.kz-shell,#wrap{width:92%!important;padding:18px!important}}
+</style>
+
+</head>
+<body>
+<div class="kz-brand"><img src="kazanova-logo.png" alt="KAZANOVA"><div><span class="kz-title">KAZANOVA PS4 HOST</span><span class="kz-sub">PREMIUM AUTO FIRMWARE EXPERIENCE</span></div></div>
+<div id="wrap">
+  <div id="state">Detecting PS4 firmware...</div>
+  <div id="det"></div>
+  <div id="cache"></div>
+</div>
+
+<script>
+(function () {
+    var stateEl = document.getElementById("state");
+    var detEl = document.getElementById("det");
+    var cacheEl = document.getElementById("cache");
+    function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; }
+    function setCache(t, ok) { cacheEl.textContent = t; cacheEl.className = ok ? "cacheok" : ""; }
+    var params = new URLSearchParams(location.search);
+
+    // Firmwares this build has a MEASURED kernel table for. jb.js still runs its
+    // own kernel-table-present gate, so this is UX only -- an unlisted firmware
+    // can still be launched with a tap. KEEP IN SYNC with ps4_offsets.js: add a
+    // fwnum here in the SAME commit that fills that firmware's kernel RVAs.
+    // The PS4 reports its minor as two hex digits in the UA (13.52 -> minor 0x52).
+    var SUPPORTED = { 1302: 1, 1304: 1, 1350: 1, 1352: 1 }; // all measured on hardware
+
+    var key = null, fwnum = null;
+    var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
+    if (m) {
+        var ms = parseInt(m[2], 16).toString(16);
+        if (ms.length < 2) ms = "0" + ms;
+        key = m[1] + "." + ms;
+        fwnum = parseInt(m[1], 10) * 100 + parseInt(ms, 10);
+    }
+
+    var forced = params.get("force") === "1";
+    var supported = forced || (fwnum !== null && SUPPORTED[fwnum] === 1);
+    detEl.innerHTML = "firmware <b>" + (key || "unknown") + "</b>"
+        + (supported ? " &middot; <b>supported</b>"
+                     : " &middot; not in this build's kernel table");
+
+    var target = "jb.html" + location.search;
+    function go() { setState("Loading compatible jailbreak...", "warn"); location.replace(target); }
+
+    function waitForTap(msg, action) {
+        setState(msg, "warn");
+        function fire() {
+            window.removeEventListener("click", fire);
+            window.removeEventListener("keydown", fire);
+            action();
+        }
+        window.addEventListener("click", fire);
+        window.addEventListener("keydown", fire);
+    }
+
+    // Off-target consoles are not launched automatically -- one tap still runs
+    // it, so a user-agent quirk on the real 13.52 console can never lock it out.
+    if (!supported) {
+        setState("UNSUPPORTED FIRMWARE", "bad");
+        waitForTap("UNSUPPORTED (" + (key || "unknown") + ") -- press X or tap to run anyway", go);
+        return;
+    }
+
+    var ac = window.applicationCache;
+    if (!ac || !document.documentElement.hasAttribute("manifest")) {
+        go();
+    } else if (!navigator.onLine) {
+        setCache("offline -- from cache", true);
+        go();
+    } else if (ac.status === ac.IDLE) {
+        setCache("cached", true);
+        go();
+    } else if (ac.status === ac.UPDATEREADY) {
+        try { ac.swapCache(); } catch (e) {}
+        setCache("update downloaded", true);
+        waitForTap("UPDATE READY -- press X or tap to reload & run",
+                   function () { location.reload(); });
+    } else {
+        setCache("checking cache...");
+        ac.addEventListener("downloading",
+            function () { setCache("caching for offline (first run)..."); }, false);
+        ac.addEventListener("progress", function (e) {
+            if (e && e.total)
+                setCache("caching " + Math.round((e.loaded / e.total) * 100) + "%");
+        }, false);
+        ac.addEventListener("cached", function () {
+            setCache("cached for offline use", true);
+            waitForTap("CACHED (first run) -- press X or tap to run", go);
+        }, false);
+        ac.addEventListener("updateready", function () {
+            try { ac.swapCache(); } catch (e) {}
+            setCache("update downloaded", true);
+            waitForTap("UPDATE READY -- press X or tap to reload & run",
+                       function () { location.reload(); });
+        }, false);
+        ac.addEventListener("noupdate", function () {
+            setCache("cached -- offline ready", true);
+            go();
+        }, false);
+        ac.addEventListener("error", function () {
+            setCache("cache unavailable");
+            waitForTap("CACHE FAILED -- press X or tap to run anyway", go);
+        }, false);
+        ac.addEventListener("obsolete", function () {
+            setCache("cache obsolete");
+            waitForTap("CACHE OBSOLETE -- press X or tap to run", go);
+        }, false);
+    }
+})();
+</script>
+</body>
+</html>

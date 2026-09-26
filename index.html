@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KAZANOVA PS4 HOST</title>
+  <style>
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background-color: #111;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .box { max-width: 760px; padding: 28px; background: rgba(0,0,0,.42); border-radius: 18px; }
+    h1 { font-size: 30px; margin: 0 0 18px; }
+    #status { font-size: 22px; line-height: 1.6; }
+    .fw { color: #ffd54f; font-weight: bold; }
+    .error { color: #ff5f5f; }
+  </style>
+
+<style id="kazanova-premium-theme">
+html,body{min-height:100%;margin:0!important;padding:0!important;background:#070b10 url("kazanova-bg.jpg") center center/cover no-repeat!important;color:#f4eee7!important;font-family:Arial,"Segoe UI",sans-serif!important;}
+body{display:block!important;text-align:center!important;overflow-x:hidden!important;}
+.kz-brand{height:68px;box-sizing:border-box;display:flex!important;align-items:center;justify-content:center;padding:8px 14px;background:rgba(8,12,17,.94);border-bottom:1px solid #b8753f;}
+.kz-brand img{width:48px!important;height:48px!important;object-fit:cover!important;border-radius:50%!important;border:1px solid #c98a55!important;margin:0 12px 0 0!important;}
+.kz-brand .kz-title{font-size:21px;font-weight:bold;letter-spacing:.10em;color:#fff2e5;}
+.kz-brand .kz-sub{display:block;font-size:9px;letter-spacing:.16em;color:#d9a06d;margin-top:3px;font-weight:bold;}
+.kz-shell,#wrap{width:86%!important;max-width:820px!important;margin:7vh auto 0!important;padding:24px!important;box-sizing:border-box!important;background:rgba(5,9,13,.86)!important;border:1px solid #9f6538!important;border-radius:10px!important;}
+h1,h2,#state,#msgs{color:#fff1e2!important;text-shadow:none!important;}
+hr{height:1px;border:0!important;background:#9f6538!important;max-width:680px;}
+button,#jailbreakBtn,.pro-animated-btn,.btn{background:#a55325!important;color:#fff8f0!important;border:1px solid #d99a62!important;border-radius:8px!important;box-shadow:none!important;padding:12px 26px!important;font-weight:bold!important;cursor:pointer!important;text-shadow:none!important;animation:none!important;transition:none!important;}
+button:focus,#jailbreakBtn:focus,.pro-animated-btn:focus,.btn:focus{background:#bd6631!important;outline:1px solid #efbc8b!important;}
+button:disabled,#jailbreakBtn:disabled{opacity:.55!important;}
+#console,pre{width:86%!important;max-width:820px!important;margin:20px auto!important;box-sizing:border-box!important;background:rgba(3,7,10,.92)!important;border:1px solid #335567!important;border-radius:7px!important;color:#dff4ff!important;box-shadow:none!important;}
+#det,#cache{color:#d5dbe1!important;text-shadow:none!important;}
+#det b,.ok,.cacheok,.safe{color:#9ce2b7!important;text-shadow:none!important;}.bad,.danger{color:#ff9a8f!important}.warn{color:#f4cb83!important;}
+footer{color:#d4ae88!important;text-shadow:none!important;}a{color:#ffc17c!important;text-shadow:none!important;}
+#spin{box-shadow:none!important;}#msg{color:#fff4e8!important;text-shadow:none!important;font-weight:bold!important;}
+#msgs{display:inline-block;max-width:760px;padding:14px 22px!important;background:rgba(5,9,13,.86);border:1px solid #9f6538;border-radius:9px;box-shadow:none!important;}
+@media (max-width:760px){.kz-brand{height:62px}.kz-brand img{width:44px!important;height:44px!important}.kz-brand .kz-title{font-size:17px}.kz-brand .kz-sub{font-size:8px}.kz-shell,#wrap{width:92%!important;padding:18px!important}}
+</style>
+
+</head>
+<body>
+<div class="kz-brand"><img src="kazanova-logo.png" alt="KAZANOVA"><div><span class="kz-title">KAZANOVA PS4 HOST</span><span class="kz-sub">PREMIUM AUTO FIRMWARE EXPERIENCE</span></div></div>
+  <div class="box kz-shell">
+    <h1>KAZANOVA PS4 AUTO HOST</h1>
+    <div id="status">Detecting your PS4 firmware...</div>
+  </div>
+
+  <script>
+  (function () {
+    var status = document.getElementById('status');
+    var ua = navigator.userAgent || '';
+    var match = ua.match(/PlayStation 4[ \/]([0-9]{1,2}\.[0-9]{2})/i);
+
+    if (!match) {
+      status.innerHTML = '<span class="error">PS4 firmware was not detected.</span>';
+      return;
+    }
+
+    var fwVersion = match[1];
+    var fwNum = parseFloat(fwVersion);
+    status.innerHTML = 'Detected Firmware: <span class="fw">' + fwVersion + '</span><br>Loading compatible host...';
+
+    // Keep both original projects untouched. This file only selects which
+    // original page to open; firmware support remains controlled by each host.
+    if (fwNum >= 7.00 && fwNum <= 9.60) {
+      window.location.replace('host-9/index.html');
+      return;
+    }
+
+    if ((fwNum >= 10.00 && fwNum <= 11.02) ||
+        (fwNum >= 11.50 && fwNum <= 13.00)) {
+      window.location.replace('host-713/713/index.html');
+      return;
+    }
+
+    // raw13g original host explicitly supports these firmware versions.
+    // Keep the raw13g project untouched and only route to its own index page.
+    if (fwVersion === '13.02' || fwVersion === '13.04' ||
+        fwVersion === '13.50' || fwVersion === '13.52') {
+      window.location.replace('host-1352/index.html');
+      return;
+    }
+
+    status.innerHTML = 'Detected Firmware: <span class="fw">' + fwVersion + '</span><br>' +
+      '<span class="error">No original host route is defined for this firmware.</span>';
+  })();
+  </script>
+</body>
+</html>

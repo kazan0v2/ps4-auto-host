@@ -1,0 +1,11 @@
+KAZANOVA PS4 AUTO HOST - LITE/STABILITY PASS (2026-09-26)
+
+- Firmware routing logic intentionally preserved.
+- Removed history.go(-history.length) navigation jumps.
+- Fixed backslashes in AppCache manifest URLs.
+- Rebuilt 13.x cache.appcache with valid explicit entries.
+- Ensured 13.x background is cached for offline use.
+- Removed unused multi-megabyte PNG duplicates.
+- Replaced GPU-heavy premium CSS effects with lightweight PS4-friendly styling.
+- Disabled decorative animation/transition effects.
+- Kept exploit, payload, offsets and GoldHEN logic unchanged.
