@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAZANOVA | PS4Debug NG 9.00 TEST</title>
+<style>
+html,body{background:#081a42;color:white;font-family:Arial,sans-serif;text-align:center;margin:0;padding:0}main{max-width:740px;margin:45px auto;padding:30px 18px}h1{font-size:32px}p{line-height:1.65}button{font-size:23px;background:#1275dc;color:#fff;border:0;border-radius:12px;padding:20px 35px;cursor:pointer}button:disabled{opacity:.45}#msgs{margin:26px auto;min-height:45px;font-weight:bold;font-size:20px;white-space:pre-wrap}.warning{background:#3b2612;border:1px solid #efb55b;padding:16px;border-radius:12px}.small{font-size:14px;color:#b8ccff}a{color:#baddff}
+</style></head><body><main>
+<h1>KAZANOVA — PS4Debug-NG</h1>
+<p>Firmware 9.00 / Experimental Loader</p>
+<div class="warning">TEST ONLY on PS4 #2 with no game open. This tries GoldHEN first, then PS4Debug-NG. It has NOT been verified on a real PS4. Do not use on customer consoles before testing.</div>
+<p><b>IMPORTANT — cold boot required:</b> Restart the PS4 completely before using this test. Do not use after GoldHEN is already loaded.</p>
+<button id="launch" type="button">START EXPERIMENTAL PS4DEBUG TEST</button>
+<div id="msgs" role="status" aria-live="polite">Ready. No payload has been launched.</div>
+<p id="kzmsg"></p>
+<p class="small"><a href="index.html">Return to normal KAZANOVA host</a> • PS4Debug service should answer at TCP port 744 if successful.</p>
+</main>
+<script>
+(function(){
+ var b=document.getElementById('launch'),m=document.getElementById('msgs');
+ function say(t){m.textContent=t;}
+ b.onclick=function(){
+   if(!/PlayStation 4[ \/]9\.00/i.test(navigator.userAgent)){say('ERROR: This test is intended only for PS4 firmware 9.00.');return;}
+   b.disabled=true;say('Checking local ps4debug-ng.bin...');
+   var req=new XMLHttpRequest(); req.open('GET','ps4debug-ng.bin',true);req.responseType='arraybuffer';
+   req.onload=function(){
+    if(req.status!==200||!req.response||req.response.byteLength<1000000){say('ERROR: Missing or invalid ps4debug-ng.bin. Upload the official ~3 MB BIN file beside this HTML page.');b.disabled=false;return;}
+    say('Payload found. Starting PSFree / GoldHEN exploit...');
+    var script=document.createElement('script');script.type='module';script.src='900/alert.js';
+    script.onerror=function(){say('ERROR: Could not load PSFree scripts.');b.disabled=false;};document.head.appendChild(script);
+   };
+   req.onerror=function(){say('ERROR: ps4debug-ng.bin could not be loaded.');b.disabled=false;};req.send();
+ };
+})();
+</script></body></html>

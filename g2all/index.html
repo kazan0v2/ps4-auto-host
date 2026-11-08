@@ -94,6 +94,38 @@ if (!isPS4) {
 }
 </script>
 <h1>PS4 5.05 - 13.52 GoldHEN Host by KAZANOVA</h1>
+<!-- KAZANOVA PS4Debug: hidden until GoldHEN payload launch request is submitted -->
+<div id="kz-debug-panel" aria-hidden="true" style="display:none;position:fixed;right:12px;top:75px;z-index:9999;background:#092449;border:2px solid #67baff;padding:12px;border-radius:10px;color:white;font:15px Arial;text-align:center;max-width:280px">
+  <button id="kz-direct-debug" type="button" style="background:#137cda;border:2px solid white;border-radius:7px;color:white;font:bold 17px Arial;padding:13px;cursor:pointer">تشغيل PS4Debug</button>
+  <div id="kz-direct-status" role="status" style="font:13px Arial;margin-top:8px">انتظر اكتمال تحميل GoldHEN أولًا.</div>
+</div>
+<script>
+(function () {
+  var button=document.getElementById('kz-direct-debug');
+  var status=document.getElementById('kz-direct-status');
+  var panel=document.getElementById('kz-debug-panel');
+  window.kzRevealDebugButton=function(){
+    if (!/PlayStation 4[ \/]9\.00/i.test(navigator.userAgent)) return;
+    panel.style.display='block';
+    panel.setAttribute('aria-hidden','false');
+    status.textContent='تم إرسال طلب تشغيل GoldHEN. زر PS4Debug متاح للتجربة؛ تحقق من نجاح تفعيل GoldHEN على جهازك أولاً.';
+  };
+  button.onclick=function () {
+    if (!/PlayStation 4[ \/]9\.00/i.test(navigator.userAgent)) {
+      status.textContent='التجربة مخصصة لجهاز PS4 بنظام 9.00 فقط.';return;
+    }
+    if (typeof window.kzLaunchDebugPayload !== 'function') {
+      status.textContent='خدمة التحميل غير جاهزة. افتح الصفحة بعد تشغيل GoldHEN وابقَ عليها.';return;
+    }
+    button.disabled=true;
+    status.textContent='جاري محاولة إرسال PS4Debug...';
+    window.kzLaunchDebugPayload(function (message,done) {
+      status.textContent=message;
+      if(done)button.disabled=false;
+    });
+  };
+})();
+</script>
 <hr>
 <br>
 <h1 id=msgs style="font-size: 30px;margin-top: 77px;margin-bottom: 455px;">Loading GoldHEN v2.4b18.12... Please Wait</h1>

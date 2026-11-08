@@ -1798,7 +1798,7 @@ function array_from_address(addr, size) {
     return og_array;
 }
 
-function runPayload(PLfile) {
+function runPayload(PLfile, onSubmitted) {
   var loader_addr = chain.sysp('mmap', 0, 0x1000, 7, 0x41000, -1, 0);
   var tmpStubArray = array_from_address(loader_addr, 1);
   tmpStubArray[0] = 0x00C3E7FF;
@@ -1823,17 +1823,59 @@ function runPayload(PLfile) {
         var pthread = malloc(0x10);
 
         call_nze('pthread_create', pthread, 0, loader_addr, payload_buffer);
+        // Payload thread creation succeeded. This is NOT confirmation of payload initialization.
+        if (typeof onSubmitted === 'function') onSubmitted();
       }
     }
   };
 }
 
+// KAZANOVA experimental ps4debug test page.
+// KAZANOVA: expose the existing exploited loader on this SAME page.
+// No page navigation or extra jailbreak attempt is triggered by the button.
+let kzDebugRequestInFlight = false;
+let kzGoldhenLaunchRequested = false;
+window.kzLaunchDebugPayload = function (status) {
+    if (!kzGoldhenLaunchRequested) {
+        status('لم يكتمل طلب تحميل GoldHEN بعد.', true); return;
+    }
+    if (kzDebugRequestInFlight) {
+        status('جارٍ محاولة تشغيل PS4Debug بالفعل.', true); return;
+    }
+    kzDebugRequestInFlight = true;
+    var check = new XMLHttpRequest();
+    check.open('GET', './ps4debug-NG.bin', true);
+    check.responseType = 'arraybuffer';
+    check.onload = function () {
+        if (check.status !== 200 || !check.response || check.response.byteLength < 1000000) {
+            kzDebugRequestInFlight = false;
+            status('ملف ps4debug-NG.bin غير موجود أو غير مكتمل في g2all.', true);
+            return;
+        }
+        try {
+            runPayload('./ps4debug-NG.bin');
+            status('تم طلب تشغيل PS4Debug؛ تحقق من المنفذ 744 على الكمبيوتر.', false);
+        } catch (err) {
+            kzDebugRequestInFlight = false;
+            status('فشل طلب التشغيل: ' + String(err), true);
+        }
+    };
+    check.onerror = function () {
+        kzDebugRequestInFlight = false;
+        status('تعذّر الوصول إلى ملف ps4debug-NG.bin.', true);
+    };
+    check.send();
+};
+
 kexploit().then(() => {
-	setTimeout(() => {
-		runPayload("./goldhen_2.4b18.12.bin");
-		msgs.innerHTML = "GoldHEN v2.4b18.12 Loaded ...";
-	},500);
-}).catch(() => {
-    msgs.innerHTML = "Failed to Load! Restart Your Console ...";
-	msgs.style.color = "yellow";
+    setTimeout(() => {
+        runPayload('./goldhen_2.4b18.12.bin', function () {
+            kzGoldhenLaunchRequested = true;
+            msgs.innerHTML = 'GoldHEN payload launch requested. Confirm it loaded before using PS4Debug.';
+            if (typeof window.kzRevealDebugButton === 'function') window.kzRevealDebugButton();
+        });
+    }, 500);
+}).catch((err) => {
+    msgs.innerHTML = 'Failed to Load! Restart Your Console ...';
+    msgs.style.color = 'yellow';
 });
